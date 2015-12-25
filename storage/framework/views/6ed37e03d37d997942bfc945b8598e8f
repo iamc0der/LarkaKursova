@@ -1,0 +1,31 @@
+<?php $__env->startSection('content'); ?>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <?php foreach(\App\Worker::all() as $worker): ?>
+            <?php echo e($worker->fio); ?>
+
+        <?php endforeach; ?>
+        <?php foreach(\App\Department::orderBy('city_id')->get() as $department): ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><?php echo e($department->name); ?>, <?php echo e($department->adress); ?></h3>
+                </div>
+                <div class="panel-body">
+                    <div><b>Місто:</b><span> <?php echo e($department->city->region_name); ?></span></div><br/>
+                    <div><b>Обмеження: </b><span>До <?php echo e($department->weight_limit); ?>кг.</span></div><br/>
+                    <div><b>Телефон: </b><span>+38-<?php echo e($department->phone); ?></span></div><br/>
+                    <div><b>Кількість працівників: </b><span> <?php echo e($department->workers->count()); ?></span></div><br/>
+                </div>
+                <div class="panel-footer">
+                    <a href="#<?php echo e($department->id); ?>" class="pull-right">Удалить</a>
+                    <a href="#"><span class="glyphicon glyphicon-stats"></span></a>
+                    <a href="department/<?php echo e($department->id); ?>"><span class="glyphicon glyphicon-info-sign"></span></a>
+                    <a href="#"><span class="glyphicon glyphicon-user"></span></a>
+                    <a href="#"><span class="glyphicon glyphicon-transfer"></span></a>
+                    <a href="#"><span class="glyphicon glyphicon-wrench"></span></a>
+                </div>
+            </div>
+            <?php endforeach; ?>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
