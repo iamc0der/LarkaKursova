@@ -1,0 +1,57 @@
+<?php $__env->startSection('content'); ?>
+<div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-2 main">
+    <!-- CONTENT HERE-->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><?php echo e($department->name); ?>, <?php echo e($department->adress); ?></h3>
+        </div>
+        <div class="panel-body">
+            <div><b>Місто: </b><?php echo e($department->city->region_name); ?></div><br/>
+            <div><b>Адресса: </b><?php echo e($department->adress); ?></div><br/>
+            <div><b>Телефон: </b><?php echo e($department->phone); ?></div><br/>
+            <div><b>Обмеження: </b> До <?php echo e($department->weight_limit); ?> кг.</div><br/>
+            <h3>Працівники</h3>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <?php foreach($department->workers as $worker): ?>
+                    <div>
+                        <span class="glyphicon glyphicon-user"> <?php echo e($worker->fio); ?></span>
+                        <a href="/worker/destroy/<?php echo e($worker->id); ?>" class="pull-right">Уволить</a>
+                    </div><br/>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <h3>Доходи отделения</h3>
+            <div>
+                <canvas height="595" style="width: 860px; height: 595px;" id="canvas" width="860"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+
+    var barChartData = {
+        labels : <?php echo $months; ?>,
+        datasets : [
+            {
+                fillColor : "rgba(151,187,205,0.5)",
+                strokeColor : "rgba(151,187,205,0.8)",
+                highlightFill : "rgba(151,187,205,0.75)",
+                highlightStroke : "rgba(151,187,205,1)",
+                data :<?php echo $money; ?>
+
+            }
+        ]
+
+    }
+    window.onload = function(){
+        var ctx = document.getElementById("canvas").getContext("2d");
+        window.myBar = new Chart(ctx).Bar(barChartData, {
+            responsive : true
+        });
+    }
+
+</script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

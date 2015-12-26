@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class DepartmentsController extends Controller
@@ -50,7 +51,22 @@ class DepartmentsController extends Controller
      */
     public function show($id)
     {
-        return Department::find($id);
+        $moneyPerMonth = DB::select('CALL department_money_per_month_statistic(?)',array($id));
+        $months = array();
+        $monthsSet = array('January','February',
+            'March','April','May','June','July','August','September','October',
+            'November','December');
+        #$values = array(0,0,0,0,0,0,0,0,0,0,0,0);
+        $values = array(0,0,0,0,0,0,0,0,0,0,0,0);
+        foreach($moneyPerMonth as $stat){
+            $values[array_search($stat->month,$monthsSet)]=$stat->value;
+        };
+        #return json_encode($months);
+        $dept = Department::find($id);
+        $workers = $dept->workers();
+        $objMoney = json_encode($values);
+        $obMonth = json_encode($monthsSet);
+        return View::make('department.detail',['department'=>$dept,'workers'=>$workers,'months'=>$obMonth,'money'=>$objMoney,'category'=>4]);
     }
 
     /**

@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <title>Test Page</title>
     <!-- Bootstrap core CSS -->
-
+    {!! Html::script('js/Chart.js')  !!}
     {!! Html::style('css/bootstrap.min.css') !!}
     <!-- Custom styles for this template -->
     {!! Html::style('css/dashboard.css') !!}
@@ -63,6 +63,12 @@
 {!! Html::script('js/jquery.min.js')  !!}
 {!! Html::script('js/bootstrap.min.js')  !!}
 {!! Html::script('js/docs.min.js')  !!}
-
+<script>
+    function selectCategory(pos){
+        $('.category' + pos).addClass("active");
+        console.log(pos);
+    };
+    //selectCategory();
+</script>
 </body>
 </html>
