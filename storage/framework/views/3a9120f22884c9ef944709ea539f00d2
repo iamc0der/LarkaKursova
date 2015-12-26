@@ -77,5 +77,43 @@
     };
     //selectCategory();
 </script>
+<!-- select items script
+<script>
+
+    $(document).ready(function(){
+        $.get("json_get_cities", function(data, status){
+            console.log(data);
+            citiesParams = $.parseJSON(data);//[{ID:'1',REGION:"VINITSYA"}];
+            $.each(citiesParams, function (i, item) {
+                $('#cities').append($('<option>', {
+                    value: item.ID,
+                    text : item.REGION
+                }));
+            });
+        });
+        console.log("loaded");
+        $("#cities").val("0");
+        $("#departments").val("0");
+    });
+    $("#cities").change(function(){
+        $("#departments option").each(function() {
+            $(this).remove();
+        });
+        $('#departments').append($('<option>', {
+            value: 0,
+            text: 'Все отделения'
+        }));
+        $.get("json_get_departments/" + this.value, function(data, status){
+            console.log(data);
+            citiesParams = $.parseJSON(data);//[{ID:'1',REGION:"VINITSYA"}];
+            $.each(citiesParams, function (i, item) {
+                $('#departments').append($('<option>', {
+                    value: item.ID,
+                    text : item.DEPARTMENT
+                }));
+            });
+        });
+    })
+</script> -->
 </body>
 </html>

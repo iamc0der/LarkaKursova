@@ -1,0 +1,35 @@
+<?php $__env->startSection('content'); ?>
+    <?php foreach($errors->all() as $error): ?>
+        <div class="errors"><?php echo e($error); ?></div>
+    <?php endforeach; ?>
+<div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-2 main">
+    <!-- CONTENT HERE-->
+    <h1 class="page-header">Регистрация работника</h1>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <?php echo Form::open(); ?>
+
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon">Ф.И.О</span>
+                    <input type="text" name="fio"class="form-control" placeholder="Иванов И.И">
+                </div><br/>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon">Логин</span>
+                    <input type="text" name="login"class="form-control" placeholder="Логин">
+                </div><br/>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon">Пароль</span>
+                    <input type="password" name="password"class="form-control">
+                    <input type="hidden" name="department_id" value="<?php echo e($department); ?>">
+                </div><br/>
+                <div class="col-sm-4 col-md-4">
+                    <button type="submit" class="btn btn-lg btn-primary btn-block">Зарегистрировать</button>
+                </div>
+            <?php echo Form::close(); ?>
+
+        </div>
+    </div>
+    <!--END CONTENT-->
+</div>
+    <?php $__env->stopSection(); ?>
+<?php echo $__env->make('main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
