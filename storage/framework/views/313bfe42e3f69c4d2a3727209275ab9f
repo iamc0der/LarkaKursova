@@ -1,0 +1,142 @@
+<?php $__env->startSection('content'); ?>
+    <div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-2 main">
+        <!-- CONTENT HERE-->
+        <h1 class="page-header">Регистрация посилки</h1>
+        <form action="$" method="post">
+            <div class="col-md-5" id="senderInfo">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Інформація про відправника</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label" for="senderCity">Місто:</label>
+                            <div>
+                                <input type="text" class="form-control" id="senderCity">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="senderName">Назва фірми або П.І.Б особи:</label>
+                            <div>
+                                <input type="text" class="form-control" id="senderName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="senderPhone">Телефон:</label>
+                            <div>
+                                <input type="text" class="form-control" id="senderPhone">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 " id="receiverInfo">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Інформація про отримувача</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label" for="receiverCity">Місто:</label>
+                            <div>
+                                <input type="text" class="form-control" id="receiverCity">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="receiverName">Назва фірми або П.І.Б особи:</label>
+                            <div>
+                                <input type="text" class="form-control" id="receiverName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="receiverName">Філія одержувач:</label>
+                            <div>
+                                <input type="text" class="form-control" id="receiverName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="receiverPhone">Телефон:</label>
+                            <div>
+                                <input type="text" class="form-control" id="receiverPhone">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-10">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Інформація про відправлення</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-sm-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Тип відправлення</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="radio">
+                                        <label><input type="radio" name="packageType">Крихкі придмети</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="packageType">Цінні папери</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="packageType">Електорніка</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="packageType">Інше</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Тип пакування</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="radio">
+                                        <label><input type="radio" name="packageType">Пакування відправника</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="packageType">Картонна коробка</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="packageType">Пакет</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="packageType">Коробка з паралоном</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Додаткова інформація</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label class="control-label" for="packageWeight">Вага:</label>
+                                        <div>
+                                            <input type="text" class="form-control" id="packageWeight">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="packageBelay">Страховка:</label>
+                                        <div>
+                                            <input type="text" class="form-control" id="packageBelay">
+                                            <input type="submit" class="btn btn-primary" value="Зарегистрировать">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <?php $__env->stopSection(); ?>
+<?php echo $__env->make('main, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

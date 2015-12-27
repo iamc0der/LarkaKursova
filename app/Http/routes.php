@@ -103,3 +103,14 @@ Route::get('/worker/new/{dept_id}',[
 Route::post('/worker/new/{dept_id}',[
     'uses'=>'WorkerController@postCreate'
 ]);
+
+
+
+
+##################### PACKAGES ####################
+
+Route::get('/packages/',[
+    'as'=>'packages',
+    'uses'=>'PackageController@getNew'
+]);
+
