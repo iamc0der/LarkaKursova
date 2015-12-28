@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use App\Worker;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -23,7 +24,7 @@ class DepartmentsController extends Controller
     public function index()
     {
         $dept = Department::all();
-       return View::make('department.all',['departments'=>$dept,'selectedCity'=>0]);
+       return View::make('department.all',['departments'=>$dept,'selectedCity'=>0,'category'=>1]);
     }
 
     public function getJSONCities(){
@@ -64,7 +65,7 @@ from departments WHERE city_id = ?";
      */
     public function getCreate()
     {
-       return View::make('department.new',['formName'=>"Регистрация отделения"]);
+       return View::make('department.new',['formName'=>"Регистрация отделения",'category'=>3]);
     }
     public function postCreate(){
         $rules = array('name'=>'required|min:6|max:100','address'=>'required|min:6|max:100',
@@ -94,7 +95,7 @@ from departments WHERE city_id = ?";
             else
                 $departments = Department::where('city_id',$city_id)->get();
         }
-        return View::make('department.all',['departments'=>$departments,'selectedCity'=>$city_id]);
+        return View::make('department.all',['category'=>1,'departments'=>$departments,'selectedCity'=>$city_id]);
     }
     /**
      * Store a newly created resource in storage.
@@ -116,11 +117,12 @@ from departments WHERE city_id = ?";
     public function show($id)
     {
         $moneyPerMonth = DB::select('CALL department_money_per_month_statistic(?)',array($id));
-        $months = array();
+        $packagesCountStatistic = DB::select('CALL sended_received_stats(?)',array($id));
+        $best5Clients = DB::select('CALL best_5_clients(?)',array($id));
+        $bestWorker = Worker::where('department_id',$id)->orderBy('packages_count','desc')->take(1)->get();
         $monthsSet = array('January','February',
             'March','April','May','June','July','August','September','October',
             'November','December');
-        #$values = array(0,0,0,0,0,0,0,0,0,0,0,0);
         $values = array(0,0,0,0,0,0,0,0,0,0,0,0);
         foreach($moneyPerMonth as $stat){
             $values[array_search($stat->month,$monthsSet)]=$stat->value;
@@ -130,7 +132,11 @@ from departments WHERE city_id = ?";
         $workers = $dept->workers();
         $objMoney = json_encode($values);
         $obMonth = json_encode($monthsSet);
-        return View::make('department.detail',['department'=>$dept,'workers'=>$workers,'months'=>$obMonth,'money'=>$objMoney,'category'=>4]);
+        $params =['department'=>$dept,'workers'=>$workers,'months'=>$obMonth,
+            'money'=>$objMoney,'category'=>4,'packagesStatistic'=>array_shift($packagesCountStatistic),
+        'moneyPerMonth'=>$moneyPerMonth,'bestWorkers'=>$bestWorker,
+        'bestClients'=>$best5Clients,'category'=>1];
+        return View::make('department.detail',$params);
     }
 
     /**
@@ -145,7 +151,7 @@ from departments WHERE city_id = ?";
         $params = ['formName'=>'Редактирование '.$oldDepartment->name,
             'old_name'=>$oldDepartment->name,'old_city_id'=>$oldDepartment->city_id,
         'old_adress'=>$oldDepartment->adress,'old_phone'=>$oldDepartment->phone,
-        'old_weight_limit'=>$oldDepartment->weight_limit];
+        'old_weight_limit'=>$oldDepartment->weight_limit,'category'=>1];
         return View::make('department.new',$params);
     }
 
@@ -172,7 +178,7 @@ from departments WHERE city_id = ?";
         $department->weight_limit =intval(Input::get('weight_limit'));
         $department->save();
 
-        return Redirect::route('departments');
+        return Redirect::route('departments',['category'=>1]);
     }
     public function update(Request $request, $id)
     {

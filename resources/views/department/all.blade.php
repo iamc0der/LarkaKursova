@@ -31,11 +31,9 @@
                 </div>
                 <div class="panel-footer">
                     <a href="#{{$department->id}}" class="pull-right">Удалить</a>
-                    <a href="#"><span class="glyphicon glyphicon-stats"></span></a>
                     <a href="department/{{$department->id}}"><span class="glyphicon glyphicon-info-sign"></span></a>
                     <a href="worker/new/{{$department->id}}"><span class="glyphicon glyphicon-user"></span></a>
-                    <a href="#"><span class="glyphicon glyphicon-transfer"></span></a>
-                    <a href="#"><span class="glyphicon glyphicon-wrench"></span></a>
+                    <a href="/department/{{$department->id}}/edit"><span class="glyphicon glyphicon-wrench"></span></a>
                 </div>
             </div>
             @endforeach

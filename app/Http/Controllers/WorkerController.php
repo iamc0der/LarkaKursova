@@ -26,7 +26,7 @@ class WorkerController extends Controller
     {
         $workers = Worker::all();
         $topWorkers = DB::select('CALL top_10_workers()');
-        return View::make('worker.all', ['workers' => $workers,'topWorkers'=>$topWorkers]);
+        return View::make('worker.all', ['workers' => $workers,'topWorkers'=>$topWorkers,'category'=>2]);
     }
 
     public function postFilter(){
@@ -38,7 +38,7 @@ class WorkerController extends Controller
     }
     public function getCreate($department_id)
     {
-        return View::make('worker.new',['department'=>$department_id]);
+        return View::make('worker.new',['department'=>$department_id,'category'=>2]);
     }
     public function postCreate($dept_id){
 

@@ -3,7 +3,12 @@
     <!-- CONTENT HERE-->
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><?php echo e($department->name); ?>, <?php echo e($department->adress); ?></h3>
+            <h3 class="panel-title"><?php echo e($department->name); ?>, <?php echo e($department->adress); ?>
+
+                <button class="pull-right" onclick="disp()">
+                    <span class="glyphicon glyphicon-print"></span>
+                </button>
+            </h3>
         </div>
         <div class="panel-body">
             <div><b>Місто: </b><?php echo e($department->city->region_name); ?></div><br/>
@@ -52,6 +57,34 @@
         });
     }
 
+</script>
+<script>
+    function disp(){
+        var reportTemplate = "<body>" +
+                "<span><b><h1>м.<?php echo e($department->city->region_name); ?>,<?php echo e($department->name); ?>, <?php echo e($department->adress); ?> </h1></b></span><hr/>" +
+                "<span><b>Отправлено посилок:</b><?php echo e($packagesStatistic->SENDED); ?></span><br/>" +
+                "<span><b>Получено посилок:</b><?php echo e($packagesStatistic->RECEIVED); ?> </span><br/>" +
+                "<span><b>Доходи :</b></span><hr/>" +
+                <?php foreach($moneyPerMonth as $money): ?>
+                        "<span><b><?php echo e($money->month); ?>:</b>  <?php echo e($money->value); ?></span><br/>" +
+                <?php endforeach; ?>
+                        "<span><b>Лучший работник</b></span><hr/>" +
+                        <?php foreach($bestWorkers as $bWorker): ?>
+                        "<span><b><?php echo e($bWorker->fio); ?> </b> обработано = <?php echo e($bWorker->packages_count); ?></span><br/>" +
+                        <?php endforeach; ?>
+                                "<span><b>Постояллие клиенти</b></span><hr/>" +
+                <?php foreach($bestClients as $best): ?>
+                        "<span><b><?php echo e($best->name); ?> </b>Телефон:  +380<?php echo e($best->phone); ?></span><br/>" +
+                        <?php endforeach; ?>
+                "</body>";
+
+
+
+        var opened = window.open("");
+        opened.document.write(reportTemplate);
+        opened.print();
+        opened.close();
+    }
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -4,7 +4,11 @@
     <!-- CONTENT HERE-->
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">{{$department->name}}, {{$department->adress}}</h3>
+            <h3 class="panel-title">{{$department->name}}, {{$department->adress}}
+                <button class="pull-right" onclick="disp()">
+                    <span class="glyphicon glyphicon-print"></span>
+                </button>
+            </h3>
         </div>
         <div class="panel-body">
             <div><b>Місто: </b>{{$department->city->region_name}}</div><br/>
@@ -52,5 +56,33 @@
         });
     }
 
+</script>
+<script>
+    function disp(){
+        var reportTemplate = "<body>" +
+                "<span><b><h1>м.{{$department->city->region_name}},{{$department->name}}, {{$department->adress}} </h1></b></span><hr/>" +
+                "<span><b>Отправлено посилок:</b>{{$packagesStatistic->SENDED}}</span><br/>" +
+                "<span><b>Получено посилок:</b>{{$packagesStatistic->RECEIVED}} </span><br/>" +
+                "<span><b>Доходи :</b></span><hr/>" +
+                @foreach($moneyPerMonth as $money)
+                        "<span><b>{{$money->month}}:</b>  {{$money->value}}</span><br/>" +
+                @endforeach
+                        "<span><b>Лучший работник</b></span><hr/>" +
+                        @foreach($bestWorkers as $bWorker)
+                        "<span><b>{{$bWorker->fio}} </b> обработано = {{$bWorker->packages_count}}</span><br/>" +
+                        @endforeach
+                                "<span><b>Постояллие клиенти</b></span><hr/>" +
+                @foreach($bestClients as $best)
+                        "<span><b>{{$best->name}} </b>Телефон:  +380{{$best->phone}}</span><br/>" +
+                        @endforeach
+                "</body>";
+
+
+
+        var opened = window.open("");
+        opened.document.write(reportTemplate);
+        opened.print();
+        opened.close();
+    }
 </script>
 @endsection

@@ -34,14 +34,20 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            @if(Auth::check())
+            @if(Auth::user()->isWorker())
+                <a class="navbar-brand" href="#">{{Auth::user()->worker->department->name}}</a>
+            @else
             <a class="navbar-brand" href="#">Администрирование</a>
+            @endif
+            @endif
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::check())
                     @if(\Illuminate\Support\Facades\Auth::user()->isWorker())
                         <li><a href="logout">
-                                {{Auth::user()->worker->department->name}}
+                                {{Auth::user()->worker->fio}}
                                 <span class="glyphicon glyphicon-log-out"></span>
                             </a>
                         </li>
@@ -81,7 +87,8 @@
         $('.category' + pos).addClass("active");
         console.log(pos);
     };
-    //selectCategory();
+    $('.cat').removeClass("active");
+    selectCategory({{$category}});
 </script>
 <!-- select items script
 <script>

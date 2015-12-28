@@ -151,3 +151,9 @@ Route::get('/packages/list/',[
     'uses'=>'PackageController@index',
     'as'=>'list-packages'
 ]);
+
+
+##################3 CLIENT #################
+Route::get('/json_get_client_name/{number}',[
+    'uses'=>'ClientController@jsonGetNameByPhone'
+]);

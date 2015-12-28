@@ -16,15 +16,15 @@
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
-                            <label class="control-label" for="sender_name">Назва фірми або П.І.Б особи:</label>
-                            <div>
-                                <input type="text" name="sender_name" class="form-control" id="sender_name">
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="control-label" for="senderPhone">Телефон:</label>
                             <div>
                                 <input type="text" name="sender_phone" class="form-control" id="senderPhone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="sender_name">Назва фірми або П.І.Б особи:</label>
+                            <div>
+                                <input type="text" name="sender_name" class="form-control" id="sender_name">
                             </div>
                         </div>
                         <div class="radio">
@@ -47,12 +47,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label" for="receiverName">Назва фірми або П.І.Б особи:</label>
-                            <div>
-                                <input type="text" name="receiver_name" class="form-control" id="receiverName">
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <label class="control-label" for="receiverName">Філія одержувач:</label>
                             <div>
@@ -65,6 +60,12 @@
                             <label class="control-label" for="receiverPhone">Телефон:</label>
                             <div>
                                 <input type="text" name="receiver_phone" class="form-control" id="receiverPhone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="receiverName">Назва фірми або П.І.Б особи:</label>
+                            <div>
+                                <input type="text" name="receiver_name" class="form-control" id="receiver_name">
                             </div>
                         </div>
                         <div class="radio">
@@ -124,6 +125,21 @@
     </div>
     </div>
     </div>
+    <script>
+        function fillNameByPhone(phoneNumber,tbName){
+            var clientName;
+            $.get('json_get_client_name/' + phoneNumber, function (data, status) {
+                console.log(data);
+                $("#" + tbName).val(data);
+            });
+        }
+        $('#senderPhone').change(function(){
+            fillNameByPhone(this.value,'sender_name');
+        });
+        $('#receiverPhone').change(function(){
+            fillNameByPhone(this.value,'receiver_name');
+        });
+    </script>
     <script>
         function getJSONFromUrl(url){
             $.get(url, function (data, status) {

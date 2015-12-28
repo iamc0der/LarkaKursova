@@ -25,7 +25,7 @@ class PackageController extends Controller
     {
         $currentDepartment = Auth::user()->worker->department->id;
         $packages = Package::where('receiver_department_id',$currentDepartment)->get();
-       return View::make('packages.list',['packages'=>$packages]);
+       return View::make('packages.list',['packages'=>$packages,'category'=>2]);
     }
 
     /**
@@ -60,7 +60,7 @@ class PackageController extends Controller
         $package = Package::where('ttn',$id)->first();
         if(is_null($package)) return "Not Found!";
         else
-        return View::make('packages.info',['package'=>$package]);
+        return View::make('packages.info',['package'=>$package,'category'=>2]);
     }
 
     /**
@@ -79,7 +79,7 @@ class PackageController extends Controller
     }
     public function getNew(){
 
-        return View::make('packages.new');
+        return View::make('packages.new',['category'=>1]);
     }
 
     public function postNew(){

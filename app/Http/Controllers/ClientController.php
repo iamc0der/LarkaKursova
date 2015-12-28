@@ -2,62 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
 
-class AuthController extends Controller
+class ClientController extends Controller
 {
-
-    public function getLogin(){
-
-        if(Auth::check()){
-            return Redirect::route('user-test');
-        }else
-        return View::make('login',['title'=>'Вход в систему','category'=>-1]);
-    }
-    public function getLogout(){
-        Auth::logout();
-       return  Redirect::route('user-login');
-    }
-    public function postLogin(){
-        Auth::logout();
-        $rules = array('login'=>'required','password'=>'required');
-        $validator = Validator::make(Input::all(), $rules);
-        if($validator->fails()){
-            return Redirect::route('user-login')->withErrors($validator);
-        }
-        $auth = Auth::attempt(array('login'=>Input::get('login'),
-            'password'=>Input::get('password')),false);
-        if(!$auth){
-            return Redirect::route('user-login')->withErrors(array('Ошибка авторицации'));
-        }
-        if(Auth::user()->isWorker()){
-
-            return Redirect::route('new-packages');
-        }
-        else return Redirect::route('departments');
-    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function test(){
-        return Auth::user();
-    }
     public function index()
     {
         //
     }
+    public function jsonGetNameByPhone($number){
 
+        $client = Client::where('phone',$number)->first();
+        if(is_null($client)) return "";
+        else
+        return $client->name;
+    }
     /**
      * Show the form for creating a new resource.
      *

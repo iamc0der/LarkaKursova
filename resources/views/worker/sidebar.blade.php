@@ -6,9 +6,8 @@
         {!! Form::close() !!}
     </ul>
     <ul class="nav nav-sidebar">
-        <li class="active"><a href="#">Регистрация отправки</a></li>
-        <li><a href="#">Видача посилки</a></li>
-        <li><a href="#">Статистика по отделению</a></li>
+        <li class="cat category1"><a href="/packages">Регистрация отправки</a></li>
+        <li class="cat category2"><a href="/packages/list">Посилки</a></li>
     </ul>
 </div>
 <script>
