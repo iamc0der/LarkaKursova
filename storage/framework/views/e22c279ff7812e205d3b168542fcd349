@@ -1,0 +1,20 @@
+<?php $__env->startSection('content'); ?>
+    <div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-2 main">
+        <!-- CONTENT HERE-->
+        <?php foreach($packages as $package): ?>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div><b>Відправлення №: </b><a href="/package/<?php echo e($package->ttn); ?>"><?php echo e($package->ttn); ?></a></div><br/>
+                <div><b>  Відділення відправник:</b><?php echo e($package->senderDepartment->city->region_name); ?>,
+                <?php echo e($package->senderDepartment->name, $package->senderDepartment->adress); ?></div><br/>
+                <div><b>  Отримувач:</b> <?php echo e($package->sender->name, $package->sender->name); ?>
+
+                    <a title="Видать посилку" href=""><span class="glyphicon glyphicon-check pull-right"></span></a>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+        <!--END CONTENT-->
+    </div>
+ <?php $__env->stopSection(); ?>
+<?php echo $__env->make('main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

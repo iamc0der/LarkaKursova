@@ -8,6 +8,7 @@
         <h2 class="form-signin-heading">Please sign in</h2>
         <input type="text" class="form-control" name="login" placeholder="Login" required autofocus>
         <input type="password" class="form-control" name="password" placeholder="Password" required>
+        <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
         <label class="checkbox">
             <input type="checkbox" name ="remember"value="remember"> Remember me
         </label>

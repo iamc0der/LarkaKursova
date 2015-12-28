@@ -138,7 +138,16 @@ Route::post('packages',[
     'uses'=>'PackageController@postNew'
 ]);
 
-Route::get('package/{id}',[
+Route::get('/package/{id}',[
     'as'=>'info-package',
     'uses'=>'PackageController@show'
+]);
+
+Route::post('/package/',[
+    'uses'=>'PackageController@search',
+    'as'=>'search-package'
+]);
+Route::get('/packages/list/',[
+    'uses'=>'PackageController@index',
+    'as'=>'list-packages'
 ]);

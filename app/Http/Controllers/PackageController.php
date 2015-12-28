@@ -23,7 +23,9 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        $currentDepartment = Auth::user()->worker->department->id;
+        $packages = Package::where('receiver_department_id',$currentDepartment)->get();
+       return View::make('packages.list',['packages'=>$packages]);
     }
 
     /**
@@ -69,7 +71,11 @@ class PackageController extends Controller
      */
     public function edit($id)
     {
-        //
+    }
+    public function search(){
+
+        $ttn = Input::get('package_ttn');
+        return Redirect::action('PackageController@show',['id'=>$ttn]);
     }
     public function getNew(){
 

@@ -22,7 +22,7 @@ class DepartmentsController extends Controller
      */
     public function index()
     {
-        $dept = Department::groupBy('city_id')->get();
+        $dept = Department::all();
        return View::make('department.all',['departments'=>$dept,'selectedCity'=>0]);
     }
 

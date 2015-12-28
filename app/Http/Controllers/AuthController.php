@@ -28,7 +28,7 @@ class AuthController extends Controller
        return  Redirect::route('user-login');
     }
     public function postLogin(){
-
+        Auth::logout();
         $rules = array('login'=>'required','password'=>'required');
         $validator = Validator::make(Input::all(), $rules);
         if($validator->fails()){
