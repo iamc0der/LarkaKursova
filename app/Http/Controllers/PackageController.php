@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
 
 class PackageController extends Controller
 {
@@ -50,7 +55,10 @@ class PackageController extends Controller
      */
     public function show($id)
     {
-        //
+        $package = Package::where('ttn',$id)->first();
+        if(is_null($package)) return "Not Found!";
+        else
+        return View::make('packages.info',['package'=>$package]);
     }
 
     /**
@@ -68,6 +76,37 @@ class PackageController extends Controller
         return View::make('packages.new');
     }
 
+    public function postNew(){
+        $params = null;
+        $rules = array('sender_name'=>'required','sender_phone'=>'required|min:9|max:9',
+            'receiver_name'=>'required','receiver_phone'=>'required|min:9|max:9',
+            'payer'=>'required','packing_type'=>'required','package_type'=>'required',
+            'department'=>'required','weight'=>'required');
+        $validator = Validator::make(Input::all(), $rules);
+        if($validator->fails()){
+            return Redirect::route('packages')->withErrors($validator);
+        }
+
+        $usr = Auth::user();
+        if($usr->isWorker()){
+
+            $currentDepartment = $usr->worker->department->id;
+            $currentWorker = $usr->worker->id;
+            $params = array((int)Input::get('sender_phone'),Input::get('sender_name'),
+                (int)Input::get('receiver_phone'),Input::get('receiver_name'),
+                $currentDepartment,Input::get('department'),(int)Input::get('weight'),
+                (int)Input::get('packing_type'),(int)Input::get('package_type'),
+                $currentWorker,(int)Input::get('payer'));
+            DB::statement('CALL regis_package(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',$params);
+        }
+        return Redirect::route('departments');
+
+    }
+    /*IN sender_phone INTEGER(9),IN sender_name VARCHAR(45),
+ IN receiver_phone INTEGER(9), IN receiver_name VARCHAR(45),
+ IN sender_dept INTEGER, IN receiver_dept INTEGER,
+ IN package_weight FLOAT, IN pking_type_id INTEGER,
+ IN pkg_type_id INTEGER, IN worker_id INTEGER, IN payer_code INTEGER(1)*/
     /**
      * Update the specified resource in storage.
      *

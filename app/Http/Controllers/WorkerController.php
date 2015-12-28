@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use App\Worker;
 use Illuminate\Http\Request;
 
@@ -27,9 +28,12 @@ class WorkerController extends Controller
         return View::make('worker.all', ['workers' => $workers,'topWorkers'=>$topWorkers]);
     }
 
-    public function filter(){
+    public function postFilter(){
 
-        return Input::get();
+
+        $d = Worker::where('department_id',2)->get();
+
+        return $d;
     }
     public function getCreate($department_id)
     {

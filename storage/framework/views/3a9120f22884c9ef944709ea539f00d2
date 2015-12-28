@@ -7,6 +7,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Test Page</title>
+    <?php echo Html::script('js/jquery.min.js'); ?>
+
+    <?php echo Html::script('js/bootstrap.min.js'); ?>
+
+    <?php echo Html::script('js/docs.min.js'); ?>
+
     <!-- Bootstrap core CSS -->
     <?php echo Html::script('js/Chart.js'); ?>
 
@@ -40,7 +46,16 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <?php if(Auth::check()): ?>
+                    <?php if(\Illuminate\Support\Facades\Auth::user()->isWorker()): ?>
+                        <li><a href="logout">
+                                <?php echo e(Auth::user()->worker->department->name); ?>
+
+                                <span class="glyphicon glyphicon-log-out"></span>
+                            </a>
+                        </li>
+                    <?php else: ?>
                     <li><a href="logout"><?php echo e(Auth::user()->name); ?> <span class="glyphicon glyphicon-log-out"></span></a></li>
+                    <?php endif; ?>
                     <?php else: ?>
                    <li><a href="login">Войти <span class="glyphicon glyphicon-log-in"></span></a></li>
                 <?php endif; ?>
@@ -52,8 +67,12 @@
     <div class="row">
         <!--SIDEBAR HERE -->
             <!--CONTENT HERE -->
-        <?php if(isset(Auth::user()->name)): ?>
+        <?php if(Auth::check()): ?>
+        <?php if((Auth::user()->isWorker())): ?>
+            <?php echo $__env->make('worker.sidebar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <?php else: ?>
             <?php echo $__env->make('admin.sidebar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+        <?php endif; ?>
         <?php endif; ?>
             <?php echo $__env->yieldContent('login'); ?>
             <?php echo $__env->yieldContent('content'); ?>
@@ -64,11 +83,6 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
-<?php echo Html::script('js/jquery.min.js'); ?>
-
-<?php echo Html::script('js/bootstrap.min.js'); ?>
-
-<?php echo Html::script('js/docs.min.js'); ?>
 
 <script>
     function selectCategory(pos){

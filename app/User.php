@@ -36,7 +36,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function worker()
     {
-        return $this->hasOne('App\Worker','worker_id');
+        return $this->hasOne('App\Worker','id');
+    }
+
+    public function isWorker(){
+        if(!is_null($this->worker_id)){
+            return true;
+        }else return false;
     }
 
 }

@@ -1,7 +1,7 @@
 <div class="filter-panel">
     <div class="panel panel-default">
         <div class="panel-body">
-                {!! Form::open(array('routs'=>'worker-filter','class'=>'navbar-form navbar-left','role'=>'search')) !!}
+                {!! Form::open(array('class'=>'navbar-form navbar-left','role'=>'search')) !!}
                 <div class="form-group">
                     Город:
                     <select class="form-control" name="city" id="cities">

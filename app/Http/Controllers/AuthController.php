@@ -39,10 +39,11 @@ class AuthController extends Controller
         if(!$auth){
             return Redirect::route('user-login')->withErrors(array('Ошибка авторицации'));
         }
-        if(is_null(Auth::user()->worker_id)){
+        if(Auth::user()->isWorker()){
 
-            return Redirect::route('departments');
+            return Redirect::route('new-packages');
         }
+        else return Redirect::route('departments');
     }
     /**
      * Display a listing of the resource.

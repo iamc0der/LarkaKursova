@@ -1,11 +1,14 @@
 @extends('main')
 @section('content')
+    @foreach($errors->all() as $error)
+        <div class="errors">{{$error}}</div>
+    @endforeach
     <div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-2 main">
         <!-- CONTENT HERE-->
         <h1 class="page-header">Регистрация посилки</h1>
         <div class="panel panel-default">
             <div class="panel-body">
-        <form action="$" method="post">
+        {!! Form::open() !!}
             <div class="col-md-5" id="senderInfo">
                 <div class="panel panel-info">
                     <div class="panel-heading">
@@ -39,7 +42,9 @@
                         <div class="form-group">
                             <label class="control-label" for="receiverCity">Місто:</label>
                             <div>
-                                <input type="text" name="department_city" class="form-control" id="receiverCity">
+                                <select class="form-control" name="city" id="cities">
+                                    <option value="0">Все города</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -51,7 +56,9 @@
                         <div class="form-group">
                             <label class="control-label" for="receiverName">Філія одержувач:</label>
                             <div>
-                                <input type="text" name="receiver_department" class="form-control" id="receiverName">
+                                <select class="form-control" name="department" id="departments">
+                                    <option value="0">Не вибрано</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -113,8 +120,47 @@
                     </div>
                 </div>
             </div>
-        </form>
+        {!! Form::close() !!}
     </div>
     </div>
     </div>
+    <script>
+        function getJSONFromUrl(url){
+            $.get(url, function (data, status) {
+                //console.log(data);
+                obj = $.parseJSON(data);//[{ID:'1',REGION:"VINITSYA"}];
+                return obj;
+            });
+        }
+        function prepareSelect(selectId){
+            $("#" + selectId + " option").each(function() {
+                $(this).remove();
+            })
+        }
+        function fillSelect(selectId, data){
+            prepareSelect(selectId);
+            $.each(data, function (i, item) {
+                $('#'+selectId).append($('<option>', {
+                    value: item.ID,
+                    text : item.VALUE
+                }));
+            });
+        }
+        $(document).ready(function() {
+            $.get("json_get_cities", function (data, status) {
+               // console.log(getJSONFromUrl('json_get_cities'));
+                citiesParams = $.parseJSON(data);//[{ID:'1',REGION:"VINITSYA"}];
+                fillSelect('cities',citiesParams);
+                currentCity = $('#cities').value;
+            });
+        });
+
+        $('#cities').change(function(){
+            $.get("json_get_departments/" + this.value, function (data, status) {
+                //console.log(data);
+                citiesParams = $.parseJSON(data);//[{ID:'1',REGION:"VINITSYA"}];
+                fillSelect('departments',citiesParams);
+            });
+        })
+    </script>
     @endsection

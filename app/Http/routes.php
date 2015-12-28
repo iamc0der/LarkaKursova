@@ -36,24 +36,35 @@ Route::get('/logout',[
 Route::get('/departments',[
     'as'=>'departments',
     'uses'=>'DepartmentsController@index',
-    'middleware' => 'admin'
+    #'middleware' => 'admin'
+])->before('auth');
+
+Route::post('/departments',[
+    'uses'=>'DepartmentsController@filter',
+    #'middleware' => 'admin'
 ])->before('auth');
 
 Route::get('/workers/filtered',[
     'as'=>'worker-filter',
     'uses'=>'WorkerController@filter',
-    'middleware' => 'admin'
+    #'middleware' => 'admin'
 ])->before('auth');
 Route::get('json_get_cities',[
     'as'=>'json-cities',
     'uses'=>'DepartmentsController@getJSONCities',
-    'middleware' => 'admin'
+    #'middleware' => 'admin'
+])->before('auth');
+
+Route::get('json_get_all_regions',[
+    'as'=>'json-regions',
+    'uses'=>'DepartmentsController@getJSONRegions',
+    #'middleware' => 'admin'
 ])->before('auth');
 
 Route::get('json_get_departments/{city_id}',[
     'as'=>'json-city-departments',
     'uses'=>'DepartmentsController@getJSONDepartments',
-    'middleware' => 'admin'
+    #'middleware' => 'admin'
 ])->before('auth');
 Route::post('/login',[
     'uses'=>'AuthController@postLogin'
@@ -63,12 +74,17 @@ Route::post('/login',[
 Route::get('/workers',[
     'as'=>'workers',
     'uses'=>'WorkerController@index',
-    'middleware' => 'admin'
+    #'middleware' => 'admin'
 ])->before('auth');
+Route::post('/workers',[
+    'uses'=>'WorkerController@postFilter',
+    #'middleware' => 'admin'
+])->before('auth');
+
 Route::get('/worker/destroy/{id}',[
     'as'=>'worker-destroy',
     'uses'=>'WorkerController@destroy',
-    'middleware' => 'admin'
+    #'middleware' => 'admin'
 ])->before('auth');
 
 ############# DEPARTMENTS #############
@@ -79,21 +95,25 @@ Route::get('/department/new',[
 ]);
 Route::post('/department/new',[
     'uses'=>'DepartmentsController@postCreate',
-    'middleware' => 'admin'
+    #'middleware' => 'admin'
 ]);
 
 Route::get('/department/{id}',[
-    'as'=>'departments',
+    'as'=>'department',
     'uses'=>'DepartmentsController@show',
-    'middleware' => 'admin'
+    #'middleware' => 'admin'
 ])->before('auth');
 
+Route::get('/department/{id}/edit',[
+    'as'=>'edit-department',
+    'uses'=>'DepartmentsController@edit',
+    #'middleware' => 'admin'
+])->before('auth');
 
-
-
-
-
-
+Route::post('/department/{id}/edit',[
+    'uses'=>'DepartmentsController@postEdit',
+    #'middleware' => 'admin'
+])->before('auth');
 
 ################## WORKER @@@@@@@@@@@@@@
 Route::get('/worker/new/{dept_id}',[
@@ -109,8 +129,16 @@ Route::post('/worker/new/{dept_id}',[
 
 ##################### PACKAGES ####################
 
-Route::get('/packages/',[
-    'as'=>'packages',
+Route::get('packages',[
+    'as'=>'new-packages',
     'uses'=>'PackageController@getNew'
 ]);
 
+Route::post('packages',[
+    'uses'=>'PackageController@postNew'
+]);
+
+Route::get('package/{id}',[
+    'as'=>'info-package',
+    'uses'=>'PackageController@show'
+]);

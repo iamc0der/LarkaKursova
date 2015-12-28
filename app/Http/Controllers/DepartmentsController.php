@@ -22,12 +22,13 @@ class DepartmentsController extends Controller
      */
     public function index()
     {
-       return View::make('department.all',['title'=>'Отделения']);
+        $dept = Department::groupBy('city_id')->get();
+       return View::make('department.all',['departments'=>$dept,'selectedCity'=>0]);
     }
 
     public function getJSONCities(){
         $query = "
-select distance.id as ID, distance.region_name as REGION
+select distance.id as ID, distance.region_name as VALUE
 from departments
 inner join distance on distance.id = city_id
 group by (distance.id)";
@@ -37,10 +38,20 @@ group by (distance.id)";
         //$obj = mb_ereg_replace('"REGION"','REGION',$obj);
         return $obj;
     }
+    public function getJSONRegions(){
+        $query = "
+select distance.id as ID, distance.region_name as VALUE
+from distance";
+        $cities = DB::select($query);
+        $obj = json_encode($cities);
+        //$obj = mb_ereg_replace('"ID"','ID',$obj);
+        //$obj = mb_ereg_replace('"REGION"','REGION',$obj);
+        return $obj;
+    }
     public function getJSONDepartments($city_id){
 
         $query = "
-select departments.id as ID, departments.name as DEPARTMENT
+select departments.id as ID, departments.name as VALUE
 from departments WHERE city_id = ?";
         $cities = DB::select($query,array($city_id));
         $obj = json_encode($cities);
@@ -53,7 +64,7 @@ from departments WHERE city_id = ?";
      */
     public function getCreate()
     {
-       return View::make('department.new');
+       return View::make('department.new',['formName'=>"Регистрация отделения"]);
     }
     public function postCreate(){
         $rules = array('name'=>'required|min:6|max:100','address'=>'required|min:6|max:100',
@@ -73,6 +84,17 @@ from departments WHERE city_id = ?";
 
         return Redirect::route('departments');
 
+    }
+    public function filter(){
+        $city_id = Input::get('city');
+        $departments = Department::orderBy('city_id')->get();
+        if(isset($city_id)){
+            if($city_id == 0)
+                $departments = Department::orderBy('city_id')->get();
+            else
+                $departments = Department::where('city_id',$city_id)->get();
+        }
+        return View::make('department.all',['departments'=>$departments,'selectedCity'=>$city_id]);
     }
     /**
      * Store a newly created resource in storage.
@@ -119,7 +141,12 @@ from departments WHERE city_id = ?";
      */
     public function edit($id)
     {
-        //
+        $oldDepartment = Department::find($id);
+        $params = ['formName'=>'Редактирование '.$oldDepartment->name,
+            'old_name'=>$oldDepartment->name,'old_city_id'=>$oldDepartment->city_id,
+        'old_adress'=>$oldDepartment->adress,'old_phone'=>$oldDepartment->phone,
+        'old_weight_limit'=>$oldDepartment->weight_limit];
+        return View::make('department.new',$params);
     }
 
     /**
@@ -129,6 +156,24 @@ from departments WHERE city_id = ?";
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function postEdit($id){
+        $rules = array('name'=>'required|min:6|max:100','address'=>'required|min:6|max:100',
+            'weight_limit'=>'required','city_id'=>'required','phone'=>'required');
+        $validator = Validator::make(Input::all(), $rules);
+        if($validator->fails()){
+            return Redirect::route('new-department')->withErrors($validator);
+        }
+
+        $department = Department::find($id);
+        $department->name = Input::get('name');
+        $department->phone = Input::get('phone');
+        $department->adress = Input::get('address');
+        $department->city_id = intval(Input::get('city_id'));
+        $department->weight_limit =intval(Input::get('weight_limit'));
+        $department->save();
+
+        return Redirect::route('departments');
+    }
     public function update(Request $request, $id)
     {
         //

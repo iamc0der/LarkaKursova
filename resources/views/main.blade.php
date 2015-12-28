@@ -7,6 +7,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Test Page</title>
+    {!! Html::script('js/jquery.min.js')  !!}
+    {!! Html::script('js/bootstrap.min.js')  !!}
+    {!! Html::script('js/docs.min.js')  !!}
     <!-- Bootstrap core CSS -->
     {!! Html::script('js/Chart.js')  !!}
     {!! Html::style('css/bootstrap.min.css') !!}
@@ -36,7 +39,15 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::check())
+                    @if(\Illuminate\Support\Facades\Auth::user()->isWorker())
+                        <li><a href="logout">
+                                {{Auth::user()->worker->department->name}}
+                                <span class="glyphicon glyphicon-log-out"></span>
+                            </a>
+                        </li>
+                    @else
                     <li><a href="logout">{{Auth::user()->name}} <span class="glyphicon glyphicon-log-out"></span></a></li>
+                    @endif
                     @else
                    <li><a href="login">Войти <span class="glyphicon glyphicon-log-in"></span></a></li>
                 @endif
@@ -48,8 +59,12 @@
     <div class="row">
         <!--SIDEBAR HERE -->
             <!--CONTENT HERE -->
-        @if(isset(Auth::user()->name))
+        @if(Auth::check())
+        @if((Auth::user()->isWorker()))
+            @include('worker.sidebar')
+            @else
             @include('admin.sidebar')
+        @endif
         @endif
             @yield('login')
             @yield('content')
@@ -60,9 +75,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
-{!! Html::script('js/jquery.min.js')  !!}
-{!! Html::script('js/bootstrap.min.js')  !!}
-{!! Html::script('js/docs.min.js')  !!}
+
 <script>
     function selectCategory(pos){
         $('.category' + pos).addClass("active");
