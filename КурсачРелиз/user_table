@@ -1,0 +1,11 @@
+CREATE TABLE users (
+id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(255),
+login VARCHAR(80) UNIQUE,
+password VARCHAR(80),
+remember_token VARCHAR(255),
+created_at	timestamp,
+updated_at	timestamp,
+email VARCHAR(255),
+worker_id INTEGER,
+FOREIGN KEY (worker_id) REFERENCES workers(id) ON UPDATE CASCADE);

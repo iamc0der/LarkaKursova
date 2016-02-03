@@ -1,0 +1,22 @@
+CREATE TABLE clients (
+id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(45) NOT NULL,
+phone INTEGER(9) NOT NULL);
+CREATE UNIQUE INDEX client_phone ON clients(phone);
+
+
+DELIMITER // 
+CREATE TRIGGER before_insert_clients
+BEFORE INSERT ON clients
+FOR EACH ROW
+BEGIN
+DECLARE msg VARCHAR(255);
+DECLARE part INT;
+SET part = NEW.phone DIV 100000000;
+ 
+IF ((part < 1) or (part > 9)) THEN
+ SET msg = "It's not phone!";
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+END IF;
+END//
+
